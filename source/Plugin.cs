@@ -62,7 +62,7 @@ namespace Pause
         {
             try
             {
-                var oldConfigPath = Path.Combine(Paths.ConfigPath, OriginalGuid + ".cfg");
+                var oldConfigPath = Path.Combine(Path.GetDirectoryName(Config.ConfigFilePath) ?? string.Empty, OriginalGuid + ".cfg");
                 if (!File.Exists(oldConfigPath))
                 {
                     return;
