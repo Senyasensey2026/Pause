@@ -145,7 +145,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;$(SptPath)\BepInEx\plugins\$(TargetName).dll&quot;" />
+  <!-- Copies the built DLL into the local SPT install for testing (same layout as the release archive) -->
+  <Target Name="CopyToSpt" AfterTargets="Build" Condition="Exists('$(SptPath)\BepInEx\plugins')">
+    <MakeDir Directories="$(SptPath)\BepInEx\plugins\netVnum-Pause" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SptPath)\BepInEx\plugins\netVnum-Pause" ContinueOnError="true" />
   </Target>
 </Project>
