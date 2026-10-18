@@ -19,8 +19,8 @@ namespace Pause
                 return true;
             }
 
-            typeof(GameWorld).GetMethod("PlayerTick", BindingFlags.Instance | BindingFlags.Public)
-                ?.Invoke(__instance, new object[] { dt });
+            // Keep the main player ticking (camera, input) while the rest of the world is frozen
+            __instance.PlayerTick(dt);
 
             return false;
         }
@@ -37,9 +37,10 @@ namespace Pause
         }
     }
 
-    public class GameTimerClassUpdatePatch : ModulePatch
+    // SPT 4.1+: GameTimerClass -> EFT.GameTimer, method_0 -> GetPastTime
+    public class GameTimerUpdatePatch : ModulePatch
     {
-        protected override MethodBase GetTargetMethod() => AccessTools.Method(typeof(GameTimerClass), nameof(GameTimerClass.method_0));
+        protected override MethodBase GetTargetMethod() => AccessTools.Method(typeof(GameTimer), nameof(GameTimer.GetPastTime));
 
         [PatchPrefix]
         internal static bool Prefix()
