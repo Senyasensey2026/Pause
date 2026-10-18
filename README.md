@@ -1,4 +1,4 @@
-Updated for SPT 4.0.1
+Updated for SPT 4.1.6
 
 This mod will pause the following:
 - You
