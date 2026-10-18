@@ -1,7 +1,5 @@
 # Forge page (copy these fields into the upload form; this file is not shipped in the archive)
 
-Replace `<your-github>` with your GitHub username everywhere.
-
 ## Name
 Pause
 
@@ -55,7 +53,7 @@ Delete the `BepInEx\plugins\netVnum-Pause` folder.
 None besides SPT 4.1.x.
 
 ### Bug reports
-Please open an issue on GitHub and attach `BepInEx\LogOutput.log`: https://github.com/<your-github>/Pause/issues
+Please open an issue on GitHub and attach `BepInEx\LogOutput.log`: https://github.com/Senyasensey2026/Pause/issues
 
 ### Credits
 Original mod by netVnum and previous contributors. Updated for SPT 4.1 with the original author's permission.
@@ -66,8 +64,8 @@ Original mod by netVnum and previous contributors. Updated for SPT 4.1 with the 
 - Extra safety checks; new install folder `BepInEx\plugins\netVnum-Pause\`
 
 ## Links
-- Source code: https://github.com/<your-github>/Pause
-- Download: https://github.com/<your-github>/Pause/releases/download/v1.5.0/netVnum-Pause-1.5.0.zip
+- Source code: https://github.com/Senyasensey2026/Pause
+- Download: https://github.com/Senyasensey2026/Pause/releases/download/v1.5.0/netVnum-Pause-1.5.0.zip
 - VirusTotal: <link to the scan of the zip>
 - License: MIT
 
