@@ -27,7 +27,8 @@ copy /y "%ROOT%source\bin\Release\net481\netVnum.Pause.dll" "%MODDIR%\" >nul || 
 copy /y "%ROOT%LICENSE" "%MODDIR%\LICENSE.txt" >nul || goto :fail
 copy /y "%ROOT%README.md" "%MODDIR%\README.md" >nul || goto :fail
 
-powershell -NoProfile -Command "Compress-Archive -Path '%PKG%\*' -DestinationPath '%ZIP%' -Force" || goto :fail
+rem tar (built into Windows 10+) writes forward-slash paths; Compress-Archive in Windows PowerShell 5.1 writes backslashes
+tar -a -c -f "%ZIP%" -C "%PKG%" BepInEx || goto :fail
 
 echo.
 echo Done: %ZIP%
