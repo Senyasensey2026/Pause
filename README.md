@@ -1,8 +1,10 @@
-# Pause
+# Pause Continued
 
 [![SPT](https://img.shields.io/badge/SPT-4.1.x-blue)](https://sp-mod.com/)
 [![Version](https://img.shields.io/badge/version-1.5.0-green)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
+
+A continuation of [Pause by netVnum](https://sp-mod.com/mod/2046/pause), updated for SPT 4.1 with the author's permission.
 
 A BepInEx client mod for SPT that lets you pause a raid with a single key (**F9** by default).
 Step away from the PC, answer the door or think about your next move without losing raid time.
@@ -19,16 +21,17 @@ Step away from the PC, answer the door or think about your next move without los
 - Camera zoom is restored correctly after unpausing, including when you were aiming down sights
 
 ## Installation
-1. Download `netVnum-Pause-x.y.z.zip` from [Releases](../../releases) or the Forge page.
+1. Download `rejzbihai-Pause-x.y.z.zip` from [Releases](../../releases) or the Forge page.
 2. Extract it into your SPT root folder (the one containing `EscapeFromTarkov.exe`).
-3. Check that `BepInEx\plugins\netVnum-Pause\netVnum.Pause.dll` exists.
-4. If you used an older version of Pause, delete the old `BepInEx\plugins\netVnum.Pause.dll`.
+3. Check that `BepInEx\plugins\rejzbihai-Pause\rejzbihai.Pause.dll` exists.
+4. **Remove the original Pause** if you have it: delete `netVnum.Pause.dll` (directly in `BepInEx\plugins` or in a `netVnum-Pause` folder). While it is installed, BepInEx will not load Pause Continued.
+5. Your pause key is copied from the original Pause config on first launch.
 
 ## Usage
 Press **F9** in raid to pause, press it again to resume.
 
 ## Configuration
-The config file `BepInEx\config\com.netVnum.pause.cfg` is created after the first launch.
+The config file `BepInEx\config\com.rejzbihai.pause.cfg` is created after the first launch.
 You can also change settings in-game with the BepInEx Configuration Manager (F12), if you have it installed.
 
 | Section | Setting | Default | Description |
@@ -40,7 +43,7 @@ You can also change settings in-game with the BepInEx Configuration Manager (F12
 - Mods that also change `Time.timeScale` or freeze bots may conflict.
 
 ## Uninstall
-Delete the `BepInEx\plugins\netVnum-Pause` folder. Optionally delete `BepInEx\config\com.netVnum.pause.cfg`.
+Delete the `BepInEx\plugins\rejzbihai-Pause` folder. Optionally delete `BepInEx\config\com.rejzbihai.pause.cfg`.
 
 ## Reporting bugs
 Open an [issue](../../issues/new/choose) and attach `BepInEx\LogOutput.log` from the session where the problem happened.
@@ -54,12 +57,12 @@ build-release.bat "C:\SPT"
 In PowerShell use `.\build-release.bat "C:\SPT"`.
 
 The script builds the DLL against the given SPT install, copies it into that install for testing,
-and creates `release\netVnum-Pause-<version>.zip` with the release layout.
+and creates `release\rejzbihai-Pause-<version>.zip` with the release layout.
 To only build: `dotnet build source\Pause.csproj -c Release -p:SptPath="C:\SPT"`.
 
 ## Credits
-- Original mod by **netVnum** and previous contributors (see git history).
-- SPT 4.1 update by **Arsenii**.
+- Original [Pause](https://sp-mod.com/mod/2046/pause) by **netVnum** and previous contributors (see git history).
+- Continued for SPT 4.1 by **Arsenii** (rejzbihai), with netVnum's permission.
 
 ## License
 [MIT](LICENSE)

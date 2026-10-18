@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net481</TargetFramework>
-    <AssemblyName>netVnum.Pause</AssemblyName>
+    <AssemblyName>rejzbihai.Pause</AssemblyName>
     <Version>1.5.0</Version>
-    <Product>Pause</Product>
+    <Product>Pause Continued</Product>
     <Description>SPT client mod: pause a raid with one key (you, bots, time of day, audio and raid timer freeze).</Description>
-    <Authors>netVnum; Arsenii (SPT 4.1 update)</Authors>
+    <Authors>Arsenii (rejzbihai); original Pause by netVnum</Authors>
     <Copyright>Copyright 2025 netVnum, 2026 Arsenii. MIT License.</Copyright>
   </PropertyGroup>
 
@@ -151,7 +151,7 @@
 
   <!-- Copies the built DLL into the local SPT install for testing (same layout as the release archive) -->
   <Target Name="CopyToSpt" AfterTargets="Build" Condition="Exists('$(SptPath)\BepInEx\plugins')">
-    <MakeDir Directories="$(SptPath)\BepInEx\plugins\netVnum-Pause" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SptPath)\BepInEx\plugins\netVnum-Pause" ContinueOnError="true" />
+    <MakeDir Directories="$(SptPath)\BepInEx\plugins\rejzbihai-Pause" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SptPath)\BepInEx\plugins\rejzbihai-Pause" ContinueOnError="true" />
   </Target>
 </Project>

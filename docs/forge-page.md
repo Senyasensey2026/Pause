@@ -1,10 +1,10 @@
 # Forge page (copy these fields into the upload form; this file is not shipped in the archive)
 
 ## Name
-Pause
+Pause Continued
 
 ## GUID
-com.netVnum.pause
+com.rejzbihai.pause
 
 ## Version
 1.5.0
@@ -21,6 +21,8 @@ Pause your raid with one key: you, bots, time of day, audio and the raid timer a
 
 ## Description
 
+> Continuation of [PAUSE by netVnum](https://sp-mod.com/mod/2046/pause), updated for SPT 4.1 with the author's permission.
+
 Pause lets you freeze a raid at any moment with a single key (**F9** by default). Step away from the PC, answer the door or plan your next move without losing raid time.
 
 ### Features
@@ -34,12 +36,13 @@ Pause lets you freeze a raid at any moment with a single key (**F9** by default)
 
 ### Installation
 1. Extract the archive into your SPT root folder (where `EscapeFromTarkov.exe` is).
-2. Check that `BepInEx\plugins\netVnum-Pause\netVnum.Pause.dll` exists.
-3. If you used an older Pause, delete the old `BepInEx\plugins\netVnum.Pause.dll`.
+2. Check that `BepInEx\plugins\rejzbihai-Pause\rejzbihai.Pause.dll` exists.
+3. **Remove the original Pause** if you have it: delete `netVnum.Pause.dll` (directly in `BepInEx\plugins` or in a `netVnum-Pause` folder). While it is installed, Pause Continued will not load.
+4. Your pause key is copied from the original Pause config on first launch.
 
 ### Usage
 Press **F9** in raid to pause, press it again to resume.
-Change the key in `BepInEx\config\com.netVnum.pause.cfg` or with the Configuration Manager (F12).
+Change the key in `BepInEx\config\com.rejzbihai.pause.cfg` or with the Configuration Manager (F12).
 
 ### Compatibility
 - SPT 4.1.x (tested on 4.1.6). Not compatible with 4.0.x.
@@ -47,7 +50,7 @@ Change the key in `BepInEx\config\com.netVnum.pause.cfg` or with the Configurati
 - Mods that also change time scale or freeze bots may conflict.
 
 ### Uninstall
-Delete the `BepInEx\plugins\netVnum-Pause` folder.
+Delete the `BepInEx\plugins\rejzbihai-Pause` folder.
 
 ### Dependencies
 None besides SPT 4.1.x.
@@ -56,16 +59,16 @@ None besides SPT 4.1.x.
 Please open an issue on GitHub and attach `BepInEx\LogOutput.log`: https://github.com/Senyasensey2026/Pause/issues
 
 ### Credits
-Original mod by netVnum and previous contributors. Updated for SPT 4.1 with the original author's permission.
+Original [PAUSE](https://sp-mod.com/mod/2046/pause) by netVnum and previous contributors. Continued for SPT 4.1 with netVnum's permission.
 
 ## Version changelog (for the 1.5.0 version entry)
-- Updated for SPT 4.1.x
+- First release of Pause Continued, updated for SPT 4.1.x
 - Fixed camera zoom after unpausing, including when aim is released during the pause
-- Extra safety checks; new install folder `BepInEx\plugins\netVnum-Pause\`
+- Extra safety checks; new install folder `BepInEx\plugins\rejzbihai-Pause\`
 
 ## Links
 - Source code: https://github.com/Senyasensey2026/Pause
-- Download: https://github.com/Senyasensey2026/Pause/releases/download/v1.5.0/netVnum-Pause-1.5.0.zip
+- Download: https://github.com/Senyasensey2026/Pause/releases/download/v1.5.0/rejzbihai-Pause-1.5.0.zip
 - VirusTotal: <link to the scan of the zip>
 - License: MIT
 
