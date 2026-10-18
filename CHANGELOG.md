@@ -6,7 +6,7 @@
   - timer fields `Nullable_0..3` -> `_startDateTime`, `_escapeDateTime`, `nullable_2`, `_sessionTime`
   - `TimerPanel.dateTime_0` -> `_dateTime`, `GameDateTime.RealtimeSinceStartup` -> `_realtimeSinceStartup`
   - `CameraClass` -> `CameraManager`
-- Fixed FOV reset after unpausing: it now uses the weapon animation's real field of view (`FieldOfView`).
+- Fixed camera zooming in after unpausing: the camera FOV is saved when pausing and restored exactly on unpause.
 - Added null checks around the timer panel and bot AI data, and a log error if timer fields cannot be found.
 - Release archive now installs into `BepInEx\plugins\netVnum-Pause\`.
 - SPT install path is configurable when building (`-p:SptPath=...`).

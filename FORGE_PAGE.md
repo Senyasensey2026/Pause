@@ -45,7 +45,7 @@ Original mod by netVnum and previous contributors: <link to original repo / Forg
 
 ## Changelog for this version
 - Updated for SPT 4.1.x (de-obfuscated client names)
-- Fixed FOV reset after unpausing
+- Fixed camera zooming in after unpausing
 - Extra null checks; new install folder `BepInEx\plugins\netVnum-Pause\`
 
 ## Links

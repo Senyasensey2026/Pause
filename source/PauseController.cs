@@ -108,6 +108,7 @@ namespace Pause
 
         private void Pause()
         {
+            SaveFov();
             Time.timeScale = 0f;
             _pausedDate = DateTime.UtcNow;
 
@@ -276,31 +277,40 @@ namespace Pause
             TimerPanelField.SetValue(_mainTimerPanel, timerPanelDate.Value.Add(timePaused));
         }
         
+        // FOV captured at the moment of pausing; restored on unpause.
+        // Computing a "base" FOV from ProceduralWeaponAnimation proved unreliable after the 4.1 renames
+        // (it zoomed the camera in), so we simply put back exactly what the camera had before the pause.
+        private static float? _fovBeforePause;
+        private static bool _aimingBeforePause;
+
+        private static void SaveFov()
+        {
+            _fovBeforePause = null;
+            if (CameraManager.Instance == null)
+            {
+                return;
+            }
+
+            var fov = CameraManager.Instance.Fov;
+            if (fov > 1f && fov < 180f)
+            {
+                _fovBeforePause = fov;
+            }
+
+            var pwa = MainPlayer?.ProceduralWeaponAnimation;
+            _aimingBeforePause = pwa != null && (bool)(IsAimingField?.GetValue(pwa) ?? false);
+        }
+
         private static void ResetFov()
         {
-            if (MainPlayer == null || MainPlayer.ProceduralWeaponAnimation == null || CameraManager.Instance == null)
+            if (!_fovBeforePause.HasValue || CameraManager.Instance == null)
             {
                 return;
             }
 
-            var baseFov = MainPlayer.ProceduralWeaponAnimation.FieldOfView; // was Single_2
-            var targetFov = baseFov;
-
-            var isAiming = (bool)(IsAimingField?.GetValue(MainPlayer.ProceduralWeaponAnimation) ?? false);
-            var scopeAimTransformsCount = MainPlayer.ProceduralWeaponAnimation.ScopeAimTransforms?.Count ?? 0;
-
-            if (MainPlayer.ProceduralWeaponAnimation.PointOfView != EPointOfView.FirstPerson || MainPlayer.ProceduralWeaponAnimation.AimIndex >= scopeAimTransformsCount)
-            {
-                return;
-            }
-
-            if (isAiming)
-            {
-                targetFov = MainPlayer.ProceduralWeaponAnimation.CurrentScope?.IsOptic ?? false ? 35f : baseFov - 15f;
-            }
-
-            Logger.LogDebug($"Current FOV (When Unpausing): {CameraManager.Instance.Fov}, Base FOV: {baseFov}, Target FOV: {targetFov}");
-            CameraManager.Instance.SetFov(targetFov, 1f, !isAiming);
+            Logger.LogDebug($"Current FOV (When Unpausing): {CameraManager.Instance.Fov}, restoring: {_fovBeforePause.Value}");
+            CameraManager.Instance.SetFov(_fovBeforePause.Value, 0.1f, !_aimingBeforePause);
+            _fovBeforePause = null;
         }
 
         internal static void Enable()
