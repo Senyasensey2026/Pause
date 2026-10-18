@@ -6,7 +6,7 @@
   - timer fields `Nullable_0..3` -> `_startDateTime`, `_escapeDateTime`, `nullable_2`, `_sessionTime`
   - `TimerPanel.dateTime_0` -> `_dateTime`, `GameDateTime.RealtimeSinceStartup` -> `_realtimeSinceStartup`
   - `CameraClass` -> `CameraManager`
-- Fixed camera zooming in after unpausing: the camera FOV is saved when pausing and restored exactly on unpause.
+- Fixed camera FOV after unpausing: the mod waits for the game to finish entering/leaving ADS, then restores the correct hip-fire or aimed FOV (no more zoom stuck after releasing aim during pause).
 - Added null checks around the timer panel and bot AI data, and a log error if timer fields cannot be found.
 - Release archive now installs into `BepInEx\plugins\netVnum-Pause\`.
 - SPT install path is configurable when building (`-p:SptPath=...`).

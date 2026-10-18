@@ -88,6 +88,11 @@ namespace Pause
         [UsedImplicitly]
         private void Update()
         {
+            if (!IsPaused)
+            {
+                TrackBaseFov();
+            }
+
             if (!IsKeyPressed(Plugin.TogglePause.Value))
             {
                 return;
@@ -102,12 +107,18 @@ namespace Pause
             else
             {
                 Unpause();
-                ResetFov();
+                _fovFixCoroutine = StartCoroutine(CoFixFovAfterUnpause());
             }
         }
 
         private void Pause()
         {
+            if (_fovFixCoroutine != null)
+            {
+                StopCoroutine(_fovFixCoroutine);
+                _fovFixCoroutine = null;
+            }
+
             SaveFov();
             Time.timeScale = 0f;
             _pausedDate = DateTime.UtcNow;
@@ -277,39 +288,113 @@ namespace Pause
             TimerPanelField.SetValue(_mainTimerPanel, timerPanelDate.Value.Add(timePaused));
         }
         
-        // FOV captured at the moment of pausing; restored on unpause.
-        // Computing a "base" FOV from ProceduralWeaponAnimation proved unreliable after the 4.1 renames
-        // (it zoomed the camera in), so we simply put back exactly what the camera had before the pause.
-        private static float? _fovBeforePause;
-        private static bool _aimingBeforePause;
+        // ---- FOV handling ----
+        // Time.timeScale = 0 can leave the camera FOV stuck mid-transition. We do NOT force a FOV right away on
+        // unpause, because the game itself may be leaving or entering ADS at that moment (e.g. the aim button was
+        // released during the pause). Instead we wait until the game's own ADS transition has finished, then check
+        // the FOV against the player's *current* aiming state and only correct it if it is clearly wrong.
 
-        private static void SaveFov()
+        private const float FovFixDelay = 0.6f; // seconds of real time after unpause; ADS transitions take ~0.2-0.5s
+        private const float FovTolerance = 0.5f;
+        private const float BaseFovStableTime = 1f; // must be out of ADS this long before we trust the FOV as "base"
+
+        private Coroutine _fovFixCoroutine;
+        private float? _fovBeforePause;     // camera FOV at the moment of pausing
+        private bool _aimingBeforePause;
+        private float? _lastBaseFov;        // last known hip-fire FOV (not aiming, first person)
+        private float _notAimingSince = -1f;
+
+        private static bool IsAiming()
+        {
+            var pwa = MainPlayer?.ProceduralWeaponAnimation;
+            return pwa != null && (bool)(IsAimingField?.GetValue(pwa) ?? false);
+        }
+
+        private static bool IsFirstPerson()
+        {
+            var pwa = MainPlayer?.ProceduralWeaponAnimation;
+            return pwa != null && pwa.PointOfView == EPointOfView.FirstPerson;
+        }
+
+        private static bool IsValidFov(float fov) => fov > 1f && fov < 180f;
+
+        private void TrackBaseFov()
+        {
+            if (CameraManager.Instance == null || !IsFirstPerson() || IsAiming())
+            {
+                _notAimingSince = -1f;
+                return;
+            }
+
+            if (_notAimingSince < 0f)
+            {
+                _notAimingSince = Time.unscaledTime;
+                return;
+            }
+
+            if (Time.unscaledTime - _notAimingSince >= BaseFovStableTime)
+            {
+                var fov = CameraManager.Instance.Fov;
+                if (IsValidFov(fov))
+                {
+                    _lastBaseFov = fov;
+                }
+            }
+        }
+
+        private void SaveFov()
         {
             _fovBeforePause = null;
+            _aimingBeforePause = IsAiming();
+
             if (CameraManager.Instance == null)
             {
                 return;
             }
 
             var fov = CameraManager.Instance.Fov;
-            if (fov > 1f && fov < 180f)
+            if (IsValidFov(fov))
             {
                 _fovBeforePause = fov;
+                if (!_aimingBeforePause && IsFirstPerson())
+                {
+                    _lastBaseFov = fov;
+                }
             }
-
-            var pwa = MainPlayer?.ProceduralWeaponAnimation;
-            _aimingBeforePause = pwa != null && (bool)(IsAimingField?.GetValue(pwa) ?? false);
         }
 
-        private static void ResetFov()
+        private IEnumerator CoFixFovAfterUnpause()
         {
-            if (!_fovBeforePause.HasValue || CameraManager.Instance == null)
+            yield return new WaitForSecondsRealtime(FovFixDelay);
+            _fovFixCoroutine = null;
+
+            if (IsPaused || CameraManager.Instance == null || !IsFirstPerson())
             {
-                return;
+                yield break;
             }
 
-            Logger.LogDebug($"Current FOV (When Unpausing): {CameraManager.Instance.Fov}, restoring: {_fovBeforePause.Value}");
-            CameraManager.Instance.SetFov(_fovBeforePause.Value, 0.1f, !_aimingBeforePause);
+            var current = CameraManager.Instance.Fov;
+            var aimingNow = IsAiming();
+            float? target = null;
+
+            if (!aimingNow)
+            {
+                // Out of ADS: the camera must be at the hip-fire FOV.
+                target = _lastBaseFov;
+            }
+            else if (_aimingBeforePause)
+            {
+                // Still in the same ADS as before the pause: put back the zoom we had.
+                target = _fovBeforePause;
+            }
+            // Started aiming during/after the pause: the game handles the zoom-in itself, leave it alone.
+
+            if (target.HasValue && Mathf.Abs(current - target.Value) > FovTolerance)
+            {
+                Logger.LogDebug($"Fixing FOV after unpause: {current} -> {target.Value} (aiming: {aimingNow})");
+                CameraManager.Instance.SetFov(target.Value, 0.2f, !aimingNow);
+            }
+
             _fovBeforePause = null;
         }
 
