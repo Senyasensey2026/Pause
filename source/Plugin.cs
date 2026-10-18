@@ -20,7 +20,8 @@ namespace Pause
         private void Awake()
         {
             Log = Logger;
-            TogglePause = Config.Bind("Keybinds", "Toggle Pause", new KeyboardShortcut(KeyCode.F9));
+            TogglePause = Config.Bind("Keybinds", "Toggle Pause", new KeyboardShortcut(KeyCode.F9),
+                "Key (or key combination) that pauses and unpauses the raid.");
             Logger.LogInfo("PAUSE: Loading");
 
             new NewGamePatch().Enable();

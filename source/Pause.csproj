@@ -4,6 +4,10 @@
     <TargetFramework>net481</TargetFramework>
     <AssemblyName>netVnum.Pause</AssemblyName>
     <Version>1.5.0</Version>
+    <Product>Pause</Product>
+    <Description>SPT client mod: pause a raid with one key (you, bots, time of day, audio and raid timer freeze).</Description>
+    <Authors>netVnum; Arsenii (SPT 4.1 update)</Authors>
+    <Copyright>Copyright 2025 netVnum, 2026 Arsenii. MIT License.</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

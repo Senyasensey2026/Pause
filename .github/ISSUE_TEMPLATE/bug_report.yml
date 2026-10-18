@@ -1,0 +1,46 @@
+name: Bug report
+description: Something does not work as expected
+labels: [bug]
+body:
+  - type: input
+    id: mod-version
+    attributes:
+      label: Pause version
+      placeholder: "1.5.0"
+    validations:
+      required: true
+  - type: input
+    id: spt-version
+    attributes:
+      label: SPT version
+      placeholder: "4.1.6"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start a raid on Customs
+        2. Aim down sights and press F9
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: mods
+    attributes:
+      label: Other client mods installed
+      description: List of folders/DLLs in BepInEx\plugins (besides spt).
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: Attach or paste BepInEx\LogOutput.log from the session where the problem happened.
+      render: text
