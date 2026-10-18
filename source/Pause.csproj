@@ -13,7 +13,8 @@
 
   <PropertyGroup>
     <!-- folder switch -->
-    <DepsPath>C:\SPT_DEV\EscapeFromTarkov_Data\Managed</DepsPath>
+    <SptPath Condition="'$(SptPath)' == ''">C:\SPT_DEV</SptPath>
+    <DepsPath>$(SptPath)\EscapeFromTarkov_Data\Managed</DepsPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -29,14 +30,14 @@
 
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>C:\SPT_DEV\BepInEx\core\0Harmony.dll</HintPath>
+      <HintPath>$(SptPath)\BepInEx\core\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(DepsPath)\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>C:\SPT_DEV\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>$(SptPath)\BepInEx\core\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="Comfort">
       <Private>False</Private>
@@ -47,10 +48,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="spt-common">
-      <HintPath>C:\SPT_DEV\BepInEx\plugins\spt\spt-common.dll</HintPath>
+      <HintPath>$(SptPath)\BepInEx\plugins\spt\spt-common.dll</HintPath>
     </Reference>
     <Reference Include="spt-reflection">
-      <HintPath>C:\SPT_DEV\BepInEx\plugins\spt\spt-reflection.dll</HintPath>
+      <HintPath>$(SptPath)\BepInEx\plugins\spt\spt-reflection.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(DepsPath)\UnityEngine.dll</HintPath>
@@ -145,6 +146,6 @@
   </ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;C:\SPT_DEV\BepInEx\plugins\$(TargetName).dll&quot;" />
+    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;$(SptPath)\BepInEx\plugins\$(TargetName).dll&quot;" />
   </Target>
 </Project>
